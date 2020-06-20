@@ -2,16 +2,21 @@ const Request = require("./../models/Request");
 const CustomError = require("./../utils/CustomError");
 
 class RequestService {
-  async create(data) {
-    const request = new Request(data);
-    await request.save();
-    return {
+
+  async create(data, req) {
+    data = {
       //This token is not necessary here. This is a protected route so just get the user_id from the request (req)
       // token: token,
-      uid: request._id,
-      name: request.name,
-      email: request.email,
+      uid: data._id,
+      title: data.title,
+      amount: data.amount,
+      isFunded: data.isFunded,
+      user: req.user._id, // For relationship between User and Requests
+      // email: request.email,
     };
+    const request = new Request(data, req);
+    const newdata = await request.save();
+    return newdata;
   }
 
    update(id,data) {
