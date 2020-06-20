@@ -1,26 +1,26 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   name: {
     type: String,
-    required: [true, "Please add a name"],
+    required: [true, 'Please add a name'],
   },
   email: {
     type: String,
-    required: [true, "Please add an email"],
+    required: [true, 'Please add an email'],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please add a valid email",
+      'Please add a valid email',
     ],
   },
   password: {
     type: String,
-    required: [true, "Please add a password"],
+    required: [true, 'Please add a password'],
     minlength: 6,
-    select: false,
+    select: false, // what this will do is when we get a user through our API it's not going to show the password // TJ take note
   },
   number: {
     type: Number,
@@ -33,7 +33,7 @@ const UserSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  investment_count: {
+  investment_count: { // we're not using php, python syntax, JS is camelCase not snake_case
     type: Number,
     default: 0,
   },
@@ -41,14 +41,14 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  request_count: {
+  request_count: { // we're not using php, python syntax, JS is camelCase not snake_case
     type: Number,
     default: 0,
   },
   role: {
     type: String,
-    enum: ["user", "admin"],
-    default: "user",
+    enum: ['user', 'admin'],
+    default: 'user',
   },
   createdAt: {
     type: Date,
@@ -57,9 +57,10 @@ const UserSchema = new Schema({
 });
 
 // Encrypt password using bcrypt
-
-UserSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 10);
+// UsmanSBK DONT TOUCH THIS CODE
+UserSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);
