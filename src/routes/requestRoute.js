@@ -8,6 +8,9 @@ module.exports = () => {
   router.post("/", authenticate, RequestCtrl.create);
   router.put("/:requestId", authenticate, RequestCtrl.update);
   router.delete("/:requestId", authenticate, RequestCtrl.delete);
+  // @action bug fix for buka4rill
+  // @author orca
+  router.get("/all-active-requests", authenticate, RequestCtrl.getActiveRequests);
 
   router.get("/", authenticate, RequestCtrl.getRequests);
 

@@ -57,6 +57,14 @@ class RequestController {
   
   }
 
+  // @action bug fix for buka4rill
+  // @author orca
+  async getActiveRequests(req, res, next) {
+    const data = await RequestServ.findAllActiveRequests();
+
+    res.status(200).send(response('All Active Requests', data));
+  }
+
   async getRequests(req, res) {
 
     const data = await RequestServ.findAll();

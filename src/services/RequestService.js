@@ -38,8 +38,16 @@ class RequestService {
     return Request.find({$and: [{isFunded: true}, {date: {$gte: period1, $lte: period2}}]});
   }
 
+  // @desc Get all requests
   findAll() {
     return Request.find();
+  }
+
+  // @action bug fix for buka4rill
+  // @author orca
+  // @desc Get all 'active' requests
+  findAllActiveRequests() {
+    return Request.find({ isActive: true });
   }
 
 }
